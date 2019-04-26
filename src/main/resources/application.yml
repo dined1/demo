@@ -1,0 +1,27 @@
+server:
+  port: 8087
+  servlet:
+    context-path: /api
+
+spring:
+  liquibase:
+    enabled: true
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+        default-schema: demo
+    generate-ddl: false
+    database: POSTGRESQL
+    show-sql: true
+#    hibernate:
+#      ddl-auto: create
+    database-platform: org.hibernate.dialect.PostgreSQL95Dialect
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/demo
+    username: postgres
+    password: root
+    driver-class-name: org.postgresql.Driver
