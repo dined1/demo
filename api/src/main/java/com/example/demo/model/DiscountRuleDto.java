@@ -13,14 +13,14 @@ import java.util.List;
  */
 @Getter
 @Setter
-public class Discountrule implements Serializable {
+public class DiscountRuleDto implements Serializable {
 
     private String id;
     private Float discountValue;
     private Float discountProcent;
     private String type;
     private String description;
-    private List<Itemdiscount> itemdiscounts;
-    private List<OrdItemDiscount> orditemdiscounts;
+    private List<ItemDiscountDto> itemdiscounts;
+    private List<OrdItemDiscountDto> orditemdiscounts;
 
 }

@@ -6,17 +6,17 @@ package com.example.demo.model;
 import lombok.Getter;
 import lombok.Setter;
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * @author dzni0816
  */
 @Getter
 @Setter
-public class Groups implements Serializable {
+public class StatisticsCollectorDto implements Serializable {
 
     private String id;
-    private String name;
-    private List<Itemgroup> itemgroups1;
+    private String statisticType;
+    private String statisticsInfo;
+    private CustomerDto customer;
 
 }

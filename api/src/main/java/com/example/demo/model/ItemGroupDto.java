@@ -12,11 +12,10 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
-public class Statisticscollector implements Serializable {
+public class ItemGroupDto implements Serializable {
 
     private String id;
-    private String statisticType;
-    private String statisticsInfo;
-    private Customer customer;
+    private GroupsDto groups1;
+    private ItemDto item1;
 
 }

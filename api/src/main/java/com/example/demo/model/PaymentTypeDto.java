@@ -13,9 +13,9 @@ import java.util.List;
  */
 @Getter
 @Setter
-public class Paymenttype implements Serializable {
+public class PaymentTypeDto implements Serializable {
 
     private String id;
     private String typeName;
-    private List<Payment> payments;
+    private List<PaymentDto> payments;
 }

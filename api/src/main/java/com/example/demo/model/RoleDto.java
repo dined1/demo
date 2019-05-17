@@ -8,13 +8,13 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Role {
+public class RoleDto {
 
     private String id;
     private String name;
-    private List<SystemUser> systemUsers;
+    private List<SystemUserDto> systemUsers;
 
-    public Role(String id, String name){
+    public RoleDto(String id, String name){
         this.id = id;
         this.name = name;
     }

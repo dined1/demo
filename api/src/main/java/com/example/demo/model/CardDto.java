@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-public class Card implements Serializable {
+public class CardDto implements Serializable {
 
     private String id;
     private String cardnumber;

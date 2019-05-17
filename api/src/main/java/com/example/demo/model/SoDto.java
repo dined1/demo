@@ -14,7 +14,7 @@ import java.util.List;
  */
 @Getter
 @Setter
-public class So implements Serializable {
+public class SoDto implements Serializable {
 
     private String id;
     private String dateCreated;
@@ -29,8 +29,8 @@ public class So implements Serializable {
     private BigDecimal finalOTPwithTaxAndDiscount;
     private String distributionChannel;
     private String attentionFlag;
-    private Customer customer;
-    private List<Payment> payments;
-    private List<Soproduct> soproducts;
-    private Location location;
+    private CustomerDto customer;
+    private List<PaymentDto> payments;
+    private List<SoProductDto> soproducts;
+    private LocationDto location;
 }

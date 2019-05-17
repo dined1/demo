@@ -10,10 +10,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class RelatedLocation {
+public class RelatedLocationDto {
 
     private String id;
     private String name;
-    private Location parentLocation;
-    private Customer customer;
+    private LocationDto parentLocation;
+    private CustomerDto customer;
 }

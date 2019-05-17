@@ -9,12 +9,12 @@ import java.util.List;
  */
 @Getter
 @Setter
-public class Location {
+public class LocationDto {
 
     private String id;
     private String name;
-    private Customer customer;
-    private Address address;
-    private List<RelatedLocation> relatedLocations;
-    private List<So> so;
+    private CustomerDto customer;
+    private AddressDto address;
+    private List<RelatedLocationDto> relatedLocations;
+    private List<SoDto> so;
 }

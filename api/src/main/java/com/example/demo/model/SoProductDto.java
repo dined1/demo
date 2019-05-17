@@ -6,20 +6,16 @@ package com.example.demo.model;
 import lombok.Getter;
 import lombok.Setter;
 import java.io.Serializable;
-import java.util.Date;
+import java.util.List;
 
 /**
  * @author dzni0816
  */
 @Getter
 @Setter
-public class Payment implements Serializable {
+public class SoProductDto implements Serializable {
 
     private String id;
-    private String paymentInfo;
-    private Date paymentDate;
-    private Paymenttype paymenttype;
-    private So so;
-    private Paymentbill paymentbill;
-
+    private SoDto so;
+    private List<ProductItemsDto> productItemses;
 }

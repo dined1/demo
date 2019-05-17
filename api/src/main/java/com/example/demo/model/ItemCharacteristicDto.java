@@ -7,11 +7,12 @@ import java.io.Serializable;
 /**
  * Created by Admin on 17.12.2016.
  */
+
 @Getter
 @Setter
-public class OrdItemDiscount implements Serializable {
+public class ItemCharacteristicDto implements Serializable{
 
     private String id;
-    private OrdItem ordItem;
-    private Discountrule discountrule;
+    private CharacteristicsDto itemCharacteristic;
+    private ItemDto item;
 }

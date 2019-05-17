@@ -13,7 +13,7 @@ import java.util.List;
  */
 @Getter
 @Setter
-public class Address implements Serializable {
+public class AddressDto implements Serializable {
 
     private String id;
     private String addressLine;
@@ -21,7 +21,7 @@ public class Address implements Serializable {
     private String country;
     private String postalCode;
     private String modifiedDate;
-    private List<Customer> customers1;
-    private List<Location> locations;
+    private List<CustomerDto> customers1;
+    private List<LocationDto> locations;
 
 }

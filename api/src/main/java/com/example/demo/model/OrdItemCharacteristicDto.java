@@ -10,10 +10,10 @@ import java.io.Serializable;
 
 @Getter
 @Setter
-public class OrdItemCharacteristic implements Serializable {
+public class OrdItemCharacteristicDto implements Serializable {
 
     private String id;
-    private Characteristics ItemCharacteristic;
-    private OrdItem ordItem;
+    private CharacteristicsDto ItemCharacteristic;
+    private OrdItemDto ordItem;
 
 }

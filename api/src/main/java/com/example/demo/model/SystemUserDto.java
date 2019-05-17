@@ -10,12 +10,12 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @ToString
-public class SystemUser {
+public class SystemUserDto {
 
     private String id;
     private String login;
     private String password;
     private String passwordConfirm;
-    private Set<Role> roles;
+    private Set<RoleDto> roles;
 
 }

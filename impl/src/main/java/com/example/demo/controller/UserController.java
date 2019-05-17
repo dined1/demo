@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
+import com.example.demo.mapper.SystemUserMapper;
 import com.example.demo.model.SystemUser;
+import com.example.demo.model.SystemUserDto;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,8 +24,8 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public SystemUser getUser(@PathVariable String id){
-        return userService.getUser(id);
+    public SystemUserDto getUser(@PathVariable String id){
+        return SystemUserMapper.INSTANCE.toDto(userService.getUser(id));
     }
 
     @PostMapping("/create")

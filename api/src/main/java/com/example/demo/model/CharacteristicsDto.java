@@ -10,12 +10,12 @@ import java.util.List;
  */
 @Getter
 @Setter
-public class Characteristics implements Serializable {
+public class CharacteristicsDto implements Serializable {
 
     private String id;
     private String Characteristic;
     private String CharacteristicValue;
-    private List<ItemCharacteristic> itemCharacteristic;
-    private List<OrdItemCharacteristic> orditemCharacteristic;
+    private List<ItemCharacteristicDto> itemCharacteristic;
+    private List<OrdItemCharacteristicDto> orditemCharacteristic;
 
 }

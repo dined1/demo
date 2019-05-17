@@ -12,13 +12,13 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
-public class ProductItems implements Serializable {
+public class ProductItemsDto implements Serializable {
 
     private String id;
     private Float mp;
     private Float otp;
     private Float MPWithTaxandDiscont;
     private Float OTPWithTaxandDiscont;
-    private Soproduct soproduct;
-    private OrdItem ordItem;
+    private SoProductDto soproduct;
+    private OrdItemDto ordItem;
 }

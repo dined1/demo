@@ -13,7 +13,7 @@ import java.util.List;
  */
 @Getter
 @Setter
-public class Customer implements Serializable {
+public class CustomerDto implements Serializable {
 
     private String id;
     private String firstName;
@@ -26,10 +26,10 @@ public class Customer implements Serializable {
     private String passNumber;
     private String countNumber;
     private String location;
-    private Address address1;
-    private List<Location> locations;
-    private List<RelatedLocation> relatedLocations;
-    private List<Statisticscollector> statisticscollectors;
-    private List<So> soes;
+    private AddressDto address1;
+    private List<LocationDto> locations;
+    private List<RelatedLocationDto> relatedLocations;
+    private List<StatisticsCollectorDto> statisticscollectors;
+    private List<SoDto> soes;
 
 }

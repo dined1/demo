@@ -6,15 +6,19 @@ package com.example.demo.model;
 import lombok.Getter;
 import lombok.Setter;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author dzni0816
  */
 @Getter
 @Setter
-public class Itemdiscount implements Serializable {
+public class PaymentBillDto implements Serializable {
 
     private String id;
-    private Item item1;
-    private Discountrule discountrule;
+    private Float cmp;
+    private Float cotp;
+    private Float cMPDisc;
+    private Float cOTPDisc;
+    private List<PaymentDto> payments;
 }

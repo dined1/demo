@@ -7,7 +7,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class PayUser {
+public class PayUserDto {
 
     private String id;
     private String login;
@@ -17,5 +17,5 @@ public class PayUser {
     private String email;
     private Date registered = new Date();
     private boolean enabled = true;
-    private List<Account> accounts;
+    private List<AccountDto> accounts;
 }

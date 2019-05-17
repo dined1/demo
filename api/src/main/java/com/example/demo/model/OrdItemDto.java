@@ -11,7 +11,7 @@ import java.util.List;
  */
 @Getter
 @Setter
-public class OrdItem implements Serializable {
+public class OrdItemDto implements Serializable {
 
     private String oid;
     private String name;
@@ -23,14 +23,14 @@ public class OrdItem implements Serializable {
     private String locationDistribute;
     private Long parentId;
     private String status;
-    private OrdItem parent;
-    private List<OrdItem> child;
+    private OrdItemDto parent;
+    private List<OrdItemDto> child;
     private Long location;
     private Long orderedBy;
     private Long initialVersion;
-    private List<OrdItem> ordItems = new ArrayList<>();
-    private List<ProductItems> productItemses;
-    private List<OrdItemDiscount> itemdiscounts;
-    private List<OrdItemCharacteristic> itemCharacteristic;
+    private List<OrdItemDto> ordItems = new ArrayList<>();
+    private List<ProductItemsDto> productItemses;
+    private List<OrdItemDiscountDto> itemdiscounts;
+    private List<OrdItemCharacteristicDto> itemCharacteristic;
 
 }

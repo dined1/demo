@@ -16,7 +16,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class Item implements Serializable {
+public class ItemDto implements Serializable {
 
     private String id;
     private String name;
@@ -26,15 +26,15 @@ public class Item implements Serializable {
     private Float defOTP;
     private String modifiedDate;
     private BigInteger quantity;
-    private Item parent;
-    private List<Item> items = new ArrayList<>();
-    private List<ItemLocations> itemlocations;
+    private ItemDto parent;
+    private List<ItemDto> items = new ArrayList<>();
+    private List<ItemLocationsDto> itemlocations;
 
-//    @OneToMany(targetEntity = ProductItems.class, mappedBy = "item1")
-//    private List<ProductItems> productItemses1;
+//    @OneToMany(targetEntity = ProductItemsDto.class, mappedBy = "item1")
+//    private List<ProductItemsDto> productItemses1;
 
-    private List<Itemgroup> itemgroups1;
-    private List<Itemdiscount> itemdiscounts1;
-    private List<ItemCharacteristic> itemCharacteristic;
+    private List<ItemGroupDto> itemgroups1;
+    private List<ItemDiscountDto> itemdiscounts1;
+    private List<ItemCharacteristicDto> itemCharacteristic;
 
 }
