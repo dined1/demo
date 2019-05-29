@@ -4,6 +4,7 @@ import com.example.demo.model.Role;
 import com.example.demo.model.SystemUser;
 import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.UserRepository;
+import org.apache.commons.lang3.ObjectUtils;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -39,7 +41,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public SystemUser createUser(SystemUser user){
         SystemUser userDb = userRepository.findByLogin(user.getLogin());
-        if (userDb != null){
+        if (userDb != null || !Objects.equals(user.getPassword(), user.getPasswordConfirm())){
             throw new RuntimeException();
         }
         String newPass = bCryptPasswordEncoder.encode(user.getPassword());

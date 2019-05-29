@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,6 +14,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
@@ -39,7 +42,7 @@ public class JwtTokenUtil implements Serializable {
 
     private Claims getAllClaimsFromToken(String token) {
         return Jwts.parser()
-                .setSigningKey(Constants.SIGNING_KEY)
+                .setSigningKey(Constants.SIGNING_KEY.getBytes())
                 .parseClaimsJws(token)
                 .getBody();
     }
@@ -53,10 +56,11 @@ public class JwtTokenUtil implements Serializable {
         final String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority).
                         collect(Collectors.joining(","));
+        SecretKey key = new SecretKeySpec(Constants.SIGNING_KEY.getBytes(), SignatureAlgorithm.HS256.getJcaName());
         return Jwts.builder().
                 setSubject(authentication.getName())
                 .claim("scopes", authorities)
-                .signWith(SignatureAlgorithm.HS256, Constants.SIGNING_KEY)
+                .signWith(key)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis()
                         + Constants.ACCESS_TOKEN_VALIDITY_SECONDS))
