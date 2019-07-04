@@ -6,6 +6,8 @@ import com.example.demo.model.Constants;
 import com.example.demo.model.SystemUserDto;
 import com.example.demo.security.JwtTokenUtil;
 import com.example.demo.service.UserService;
+import lombok.extern.log4j.Log4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Date;
 
 @RestController
+@Log4j2
 @RequestMapping("/auth")
 public class AuthController {
 
@@ -45,7 +48,7 @@ public class AuthController {
     @PostMapping(value = "/login")
     public AuthToken generateToken(@RequestBody SystemUserDto user) throws AuthenticationException {
         UserDetails userDetails = userDetailsService.loadUserByUsername(user.getLogin());
-
+        log.info(userDetails);
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 userDetails, user.getPassword(), userDetails.getAuthorities()
         );
@@ -59,6 +62,7 @@ public class AuthController {
 
     @PostMapping(value = "/register")
     public SystemUserDto register(@RequestBody SystemUserDto user) {
+        log.info(user);
         return systemUserMapper.toDto(userService.createUser(systemUserMapper.toObject(user)));
     }
 
