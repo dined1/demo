@@ -21,7 +21,7 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   datasource:
     platform: postgres
-    url: jdbc:postgresql://ec2-174-129-227-80.compute-1.amazonaws.com:5432/d5urp5bhm69i67
-    username: dmcaqwlqggngag
-    password: 99b6b983cb6d1ec9e01e4aad215027824c7d999d65796b87df81a6f6c89f3e27
+    url: jdbc:postgresql://ec2-174-129-29-101.compute-1.amazonaws.com:5432/dcorjq5gogu8np
+    username: vievzjyolsohyh
+    password: d57bce07c83051b8eeb6a67259c0798def2c1b86b2e7930978ae7dd6989955af
     driver-class-name: org.postgresql.Driver
