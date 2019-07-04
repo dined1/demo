@@ -29,8 +29,4 @@ public class UserController {
         return systemUserMapper.toDto(userService.getUser(id));
     }
 
-    @PostMapping("/create")
-    public SystemUserDto createUser(@RequestBody SystemUserDto user){
-        return systemUserMapper.toDto(userService.createUser(systemUserMapper.toObject(user)));
-    }
 }
