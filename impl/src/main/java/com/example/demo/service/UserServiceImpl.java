@@ -41,8 +41,11 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public SystemUser createUser(SystemUser user){
         SystemUser userDb = userRepository.findByLogin(user.getLogin());
-        if (userDb != null || !Objects.equals(user.getPassword(), user.getPasswordConfirm())){
-            throw new RuntimeException();
+        if (userDb != null){
+            throw new RuntimeException("User exists!");
+        }
+        if (!Objects.equals(user.getPassword(), user.getPasswordConfirm())){
+            throw new RuntimeException("Password doesn't matches!");
         }
         String newPass = bCryptPasswordEncoder.encode(user.getPassword());
         user.setPassword(newPass);
