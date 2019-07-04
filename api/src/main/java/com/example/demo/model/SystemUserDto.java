@@ -11,7 +11,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @ToString
-@JsonIgnoreProperties(value = "password", allowSetters = true)
+@JsonIgnoreProperties(value = {"password", "roles"}, allowSetters = true)
 public class SystemUserDto {
 
     private String id;
