@@ -19,5 +19,6 @@ public class SystemUserDto {
     private String password;
     private String passwordConfirm;
     private Set<RoleDto> roles;
+    private String token;
 
 }

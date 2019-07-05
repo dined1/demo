@@ -7,4 +7,6 @@ public interface UserService {
     SystemUser getUser(String id);
 
     SystemUser createUser(SystemUser user);
+
+    SystemUser getUserByLogin(String login);
 }

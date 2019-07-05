@@ -55,4 +55,9 @@ public class UserServiceImpl implements UserService {
         user.setRoles(roles);
         return userRepository.save(user);
     }
+
+    @Override
+    public SystemUser getUserByLogin(String login){
+        return userRepository.findByLogin(login);
+    }
 }

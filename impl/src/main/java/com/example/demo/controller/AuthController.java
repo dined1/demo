@@ -1,27 +1,26 @@
 package com.example.demo.controller;
 
 import com.example.demo.mapper.SystemUserMapper;
-import com.example.demo.model.AuthToken;
 import com.example.demo.model.Constants;
+import com.example.demo.model.SystemUser;
 import com.example.demo.model.SystemUserDto;
 import com.example.demo.security.JwtTokenUtil;
 import com.example.demo.service.UserService;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
 @RestController
@@ -45,25 +44,44 @@ public class AuthController {
         this.systemUserMapper = SystemUserMapper.INSTANCE;
     }
 
-    @PostMapping(value = "/login")
-    public AuthToken generateToken(@RequestBody SystemUserDto user) throws AuthenticationException {
+    @PostMapping("/login")
+    public SystemUserDto login(@RequestBody SystemUserDto user) throws AuthenticationException {
         UserDetails userDetails = userDetailsService.loadUserByUsername(user.getLogin());
         log.info(userDetails);
+        String token = autologin(user, userDetails);
+        SystemUser userByLogin = userService.getUserByLogin(user.getLogin());
+        SystemUserDto systemUserDto = systemUserMapper.toDto(userByLogin);
+        systemUserDto.setToken(token);
+        return systemUserDto;
+    }
+
+    @GetMapping("/logout")
+    @ResponseStatus(HttpStatus.OK)
+    public void logout(HttpServletRequest request, HttpServletResponse response) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null){
+            new SecurityContextLogoutHandler().logout(request, response, authentication);
+        }
+    }
+
+    private String autologin(@RequestBody SystemUserDto user, UserDetails userDetails) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 userDetails, user.getPassword(), userDetails.getAuthorities()
         );
 
         authenticationManager.authenticate(authenticationToken);
-
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        String token = jwtTokenUtil.generateToken(authenticationToken);
-        return new AuthToken(token);
+        return jwtTokenUtil.generateToken(authenticationToken);
     }
 
     @PostMapping(value = "/register")
     public SystemUserDto register(@RequestBody SystemUserDto user) {
         log.info(user);
-        return systemUserMapper.toDto(userService.createUser(systemUserMapper.toObject(user)));
+        SystemUserDto systemUserDto = systemUserMapper.toDto(userService.createUser(systemUserMapper.toObject(user)));
+        UserDetails userDetails = userDetailsService.loadUserByUsername(user.getLogin());
+        String token = autologin(user, userDetails);
+        systemUserDto.setToken(token);
+        return systemUserDto;
     }
 
     @GetMapping(value = "/expDate")
