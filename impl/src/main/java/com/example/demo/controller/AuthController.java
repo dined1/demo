@@ -17,11 +17,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.Date;
+import java.util.Objects;
 
 @RestController
 @Log4j2
@@ -45,7 +48,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public SystemUserDto login(@RequestBody SystemUserDto user) throws AuthenticationException {
+    public SystemUserDto login(@RequestBody @Valid SystemUserDto user) throws AuthenticationException {
         UserDetails userDetails = userDetailsService.loadUserByUsername(user.getLogin());
         log.info(userDetails);
         String token = autologin(user, userDetails);
@@ -64,18 +67,22 @@ public class AuthController {
         }
     }
 
-    private String autologin(@RequestBody SystemUserDto user, UserDetails userDetails) {
+    private String autologin(SystemUserDto user, UserDetails userDetails) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 userDetails, user.getPassword(), userDetails.getAuthorities()
         );
 
-        authenticationManager.authenticate(authenticationToken);
+        try {
+            authenticationManager.authenticate(authenticationToken);
+        } catch (AuthenticationException e){
+            throw new RuntimeException("Invalid username or password.");
+        }
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         return jwtTokenUtil.generateToken(authenticationToken);
     }
 
     @PostMapping(value = "/register")
-    public SystemUserDto register(@RequestBody SystemUserDto user) {
+    public SystemUserDto register(@RequestBody @Validated(SystemUserDto.Registration.class) SystemUserDto user) {
         log.info(user);
         SystemUserDto systemUserDto = systemUserMapper.toDto(userService.createUser(systemUserMapper.toObject(user)));
         UserDetails userDetails = userDetailsService.loadUserByUsername(user.getLogin());

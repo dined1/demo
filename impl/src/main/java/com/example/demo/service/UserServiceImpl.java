@@ -20,6 +20,7 @@ import java.util.stream.Stream;
 @Service
 public class UserServiceImpl implements UserService {
 
+    private static final String ADMIN_ROLE_ID = "1";
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final RoleRepository roleRepository;
@@ -44,13 +45,11 @@ public class UserServiceImpl implements UserService {
         if (userDb != null){
             throw new RuntimeException("User exists!");
         }
-        if (!Objects.equals(user.getPassword(), user.getPasswordConfirm())){
-            throw new RuntimeException("Password doesn't matches!");
-        }
         String newPass = bCryptPasswordEncoder.encode(user.getPassword());
         user.setPassword(newPass);
 
-        Set<Role> roles = Stream.of(roleRepository.findById("1").orElseThrow(RuntimeException::new))
+        Set<Role> roles = Stream.of(roleRepository.findById(ADMIN_ROLE_ID)
+                .orElseThrow(RuntimeException::new))
                 .collect(Collectors.toSet());
         user.setRoles(roles);
         return userRepository.save(user);
