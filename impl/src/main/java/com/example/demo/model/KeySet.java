@@ -5,9 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -18,7 +16,9 @@ import java.util.List;
 public class KeySet {
 
     @Id
-    private String Id;
+    private String id;
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = SystemUser.class)
+    private SystemUser createdBy;
     @ElementCollection
     private List<String> keys;
 

@@ -5,7 +5,7 @@ server:
 
 spring:
   liquibase:
-    enabled: true
+    enabled: false
   jpa:
     properties:
       hibernate:
@@ -16,8 +16,8 @@ spring:
     generate-ddl: false
     database: POSTGRESQL
     show-sql: true
-#    hibernate:
-#      ddl-auto: update
+    hibernate:
+      ddl-auto: update
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   datasource:
     platform: postgres
