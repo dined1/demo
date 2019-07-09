@@ -13,6 +13,7 @@ public class KeySetDto {
 
     private String id;
     private String userId;
+    private String code;
     private List<String> keys;
 
 }

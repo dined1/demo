@@ -43,7 +43,7 @@ public class KeysController {
                                   @RequestParam(required = false, defaultValue = "1") int pageNumber,
                                   @RequestParam(required = false, defaultValue = "10") int pageSize, Principal principal){
         Page<KeySet> userKeys = keyService.getUserKeys(userId, direction, fields, pageNumber, pageSize);
-        return new PageResult(userKeys.getTotalElements(), userKeys.getNumber(),
+        return new PageResult(userKeys.getTotalElements(), userKeys.getNumber()+1,
                 userKeys.getSize(), userKeys.getTotalPages(), userKeys.get().map(keySetMapper::toDto)
                 .collect(Collectors.toList()));
     }

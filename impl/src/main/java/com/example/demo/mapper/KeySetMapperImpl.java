@@ -24,14 +24,15 @@ public class KeySetMapperImpl implements KeySetMapper {
 
     @Override
     public KeySetDto toDto(KeySet entity) {
-        if ( entity == null ) {
+        if (entity == null) {
             return null;
         }
         KeySetDto keySetDto = new KeySetDto();
-        keySetDto.setId( entity.getId() );
+        keySetDto.setId(entity.getId());
+        keySetDto.setCode(entity.getCode());
         List<String> list = entity.getKeys();
-        if ( list != null ) {
-            keySetDto.setKeys(new ArrayList<>(list) );
+        if (list != null) {
+            keySetDto.setKeys(new ArrayList<>(list));
         }
         keySetDto.setUserId(entity.getCreatedBy().getId());
 
@@ -40,16 +41,16 @@ public class KeySetMapperImpl implements KeySetMapper {
 
     @Override
     public KeySet toObject(KeySetDto dto) {
-        if ( dto == null ) {
+        if (dto == null) {
             return null;
         }
 
         KeySet keySet = new KeySet();
-
-        keySet.setId( dto.getId() );
+        keySet.setId(dto.getId());
+        keySet.setCode(dto.getCode());
         List<String> list = dto.getKeys();
-        if ( list != null ) {
-            keySet.setKeys(new ArrayList<>(list) );
+        if (list != null) {
+            keySet.setKeys(new ArrayList<>(list));
         }
         keySet.setCreatedBy((SystemUser) Hibernate.unproxy(userRepository.getOne(dto.getUserId())));
 

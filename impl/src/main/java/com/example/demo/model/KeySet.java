@@ -19,6 +19,7 @@ public class KeySet {
     private String id;
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = SystemUser.class)
     private SystemUser createdBy;
+    private String code;
     @ElementCollection
     private List<String> keys;
 
