@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.model.KeySet;
+import com.example.demo.model.KeySetDto;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -17,4 +18,6 @@ public interface KeyService {
     boolean secretExists(String id);
 
     KeySet getSecret(String secret, List<String> keys);
+
+    void delete(String id);
 }

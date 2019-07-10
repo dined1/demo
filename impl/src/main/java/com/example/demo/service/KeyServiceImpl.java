@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import com.example.demo.model.KeySet;
 import com.example.demo.repository.KeyRepository;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -56,6 +55,11 @@ public class KeyServiceImpl implements KeyService {
         return keySet != null
                 ? Arrays.equals(keys.toArray(), keySet.getKeys().toArray())
                 ? keySet : null : null;
+    }
+
+    @Override
+    public void delete(String id) {
+        keyRepository.deleteById(id);
     }
 
     private Pageable createPageable(String direction, List<String> fields, int pageNumber, int pageSize) {

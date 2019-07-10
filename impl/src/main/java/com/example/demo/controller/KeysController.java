@@ -69,4 +69,9 @@ public class KeysController {
         return keySetMapper.toDto(keyService.updateKeySet(keySetMapper.toObject(keySet)));
     }
 
+    @DeleteMapping("/key/{id}")
+    public void deleteKey(@PathVariable String id){
+        keyService.delete(id);
+    }
+
 }
