@@ -21,7 +21,10 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   datasource:
     platform: postgres
-    url: jdbc:postgresql://be4x0r1rfffinvjf8mmp-postgresql.services.clever-cloud.com:5432/be4x0r1rfffinvjf8mmp
-    username: uu1dezf1kkx5qbm2higq
-    password: t1uhQnH0Q69DVsfzzmO1
+#    url: jdbc:postgresql://be4x0r1rfffinvjf8mmp-postgresql.services.clever-cloud.com:5432/be4x0r1rfffinvjf8mmp
+#    username: uu1dezf1kkx5qbm2higq
+#    password: t1uhQnH0Q69DVsfzzmO1
+    url: jdbc:postgresql://ec2-174-129-29-101.compute-1.amazonaws.com:5432/dcorjq5gogu8np
+    username: vievzjyolsohyh
+    password: d57bce07c83051b8eeb6a67259c0798def2c1b86b2e7930978ae7dd6989955af
     driver-class-name: org.postgresql.Driver
