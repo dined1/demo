@@ -13,4 +13,8 @@ public interface KeyService {
     KeySet updateKeySet(KeySet keySet);
 
     Page<KeySet> getUserKeys(String userId, String direction, List<String> fields, int pageNumber, int pageSize);
+
+    boolean secretExists(String id);
+
+    KeySet getSecret(String secret, List<String> keys);
 }

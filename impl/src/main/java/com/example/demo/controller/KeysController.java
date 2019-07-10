@@ -48,6 +48,17 @@ public class KeysController {
                 .collect(Collectors.toList()));
     }
 
+    @GetMapping("/exists/{id}")
+    public boolean secretExists(@PathVariable String id){
+        return keyService.secretExists(id);
+    }
+
+    @GetMapping("/secret/")
+    public KeySetDto secretExists(@RequestParam String secret,
+                               @RequestParam List<String> keys){
+        return keySetMapper.toDto(keyService.getSecret(secret, keys));
+    }
+
     @PostMapping("/key")
     public KeySetDto createKeys(@RequestBody KeySetDto keySet){
         return keySetMapper.toDto(keyService.createKeySet(keySetMapper.toObject(keySet)));

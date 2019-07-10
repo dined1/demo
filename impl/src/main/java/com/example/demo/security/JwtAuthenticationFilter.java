@@ -32,7 +32,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         if (request.getRequestURI().endsWith("/login") ||
-                request.getRequestURI().endsWith("/job")) {
+                request.getRequestURI().endsWith("/job") ||
+                request.getRequestURI().contains("/keys/exists") ||
+                request.getRequestURI().contains("/keys/secret")) {
             filterChain.doFilter(request, response);
             return;
         }
