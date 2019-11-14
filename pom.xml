@@ -21,7 +21,7 @@
 
     <properties>
         <java.version>12</java.version>
-        <liquibase.version>3.6.3</liquibase.version>
+        <liquibase.version>3.8.1</liquibase.version>
         <postgresql.version>42.2.5</postgresql.version>
         <mapstruct.version>1.3.0.Final</mapstruct.version>
         <jsonwebtoken.version>0.10.6</jsonwebtoken.version>
