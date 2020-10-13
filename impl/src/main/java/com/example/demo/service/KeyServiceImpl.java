@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityExistsException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -63,7 +64,8 @@ public class KeyServiceImpl implements KeyService {
     }
 
     private Pageable createPageable(String direction, List<String> fields, int pageNumber, int pageSize) {
-        Sort sort = new Sort(Sort.Direction.valueOf(direction), fields);
-        return PageRequest.of(pageNumber - 1, pageSize, sort);
+//        Sort sort = new Sort(Sort.Direction.valueOf(direction), fields);  // ToDo Rewrite!
+        Sort.Order order = new Sort.Order(Sort.Direction.valueOf(direction), fields.get(0));
+        return PageRequest.of(pageNumber - 1, pageSize, Sort.by(Arrays.asList(order)));
     }
 }
