@@ -63,8 +63,7 @@ public class KeyServiceImpl implements KeyService {
     }
 
     private Pageable createPageable(String direction, List<String> fields, int pageNumber, int pageSize) {
-//        Sort sort = new Sort(Sort.Direction.valueOf(direction), fields);  // ToDo Rewrite!
-        Sort.Order order = new Sort.Order(Sort.Direction.valueOf(direction), fields.get(0));
-        return PageRequest.of(pageNumber - 1, pageSize, Sort.by(List.of(order)));
+        Sort sort = new Sort(Sort.Direction.valueOf(direction), fields);
+        return PageRequest.of(pageNumber - 1, pageSize, sort);
     }
 }
