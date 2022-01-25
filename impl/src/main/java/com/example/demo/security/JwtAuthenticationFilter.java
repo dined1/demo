@@ -5,10 +5,12 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -21,7 +23,6 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
-    @Qualifier("userDetailsService")
     private UserDetailsService userService;
 
     @Autowired
@@ -31,41 +32,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        if (request.getRequestURI().endsWith("/login") ||
-                request.getRequestURI().endsWith("/job") ||
-                request.getRequestURI().contains("/keys/exists") ||
-                request.getRequestURI().contains("/keys/secret")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
-        String header = request.getHeader(Constants.HEADER_STRING);
-        String login = null;
-        String authToken = null;
-        if (header != null && header.startsWith(Constants.TOKEN_PREFIX)) {
-            authToken = header.replace(Constants.TOKEN_PREFIX, "");
-            try {
-                login = jwtTokenUtil.getUsernameFromToken(authToken);
-            } catch (IllegalArgumentException e) {
-                logger.error("an error occured during getting login from token", e);
-            }
-        } else {
-            logger.warn("couldn't find bearer string, will ignore the header");
-        }
-        if (login != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-
-            UserDetails userDetails = userService.loadUserByUsername(login);
-            log.info(userDetails);
-            if (jwtTokenUtil.validateToken(authToken, userDetails)) {
-                UsernamePasswordAuthenticationToken authenticationToken = new
-                        UsernamePasswordAuthenticationToken(userDetails, null,
-                        userDetails.getAuthorities());
-                authenticationToken.setDetails(new WebAuthenticationDetailsSource()
-                        .buildDetails(request));
-                logger.info("authenticated user " + login + ",setting security context");
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-            }
+        String jwt = parseJwt(request);
+        if (StringUtils.hasText(jwt) && this.jwtTokenUtil.validateToken(jwt)) {
+            Authentication authentication = this.jwtTokenUtil.getAuthentication(jwt);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         filterChain.doFilter(request, response);
+    }
+
+    private String parseJwt(HttpServletRequest request) {
+        String header = request.getHeader(Constants.HEADER_STRING);
+        if (StringUtils.hasText(header) && header.startsWith(Constants.TOKEN_PREFIX)) {
+            return header.substring(Constants.TOKEN_PREFIX.length());
+        }
+        return null;
     }
 }

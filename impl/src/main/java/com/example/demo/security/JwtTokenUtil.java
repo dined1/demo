@@ -1,16 +1,15 @@
 package com.example.demo.security;
 
 import com.example.demo.model.Constants;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwtParser;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +24,8 @@ import java.util.stream.Collectors;
 
 @Component
 public class JwtTokenUtil implements Serializable {
+
+    private static final Logger LOGGER = LogManager.getLogger(JwtTokenUtil.class);
 
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
@@ -68,25 +69,42 @@ public class JwtTokenUtil implements Serializable {
 
     }
 
-    public Boolean validateToken(String token, UserDetails userDetails) {
-        final String login = getUsernameFromToken(token);
-        return( login.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    public boolean validateToken(String authToken) {
+        try {
+            Jwts.parser().setSigningKey(Constants.SIGNING_KEY).parseClaimsJws(authToken);
+            return true;
+        } catch (SignatureException e) {
+            LOGGER.info("Invalid JWT signature trace: {0}", e);
+        } catch (MalformedJwtException e) {
+            LOGGER.info("Invalid JWT token trace: {0}", e);
+        } catch (ExpiredJwtException e) {
+            LOGGER.info("Expired JWT token trace: {0}", e);
+        } catch (UnsupportedJwtException e) {
+            LOGGER.info("Unsupported JWT token trace: {0}", e);
+        } catch (IllegalArgumentException e) {
+            LOGGER.info("JWT token compact of handler are invalid trace: {0}", e);
+        }
+        return false;
     }
 
-    public UsernamePasswordAuthenticationToken getAuthentication(final String token, final Authentication existingAuth, final UserDetails userDetails) {
-
-        final JwtParser jwtParser = Jwts.parser().setSigningKey(Constants.SIGNING_KEY);
-
-        final Jws<Claims> claimsJws = jwtParser.parseClaimsJws(token);
-
-        final Claims claims = claimsJws.getBody();
+    public Authentication getAuthentication(final String token) {
+        final Claims claims = getClaims(token);
 
         final Collection<? extends GrantedAuthority> authorities =
                 Arrays.stream(claims.get(Constants.AUTHORITIES_KEY).toString().split(","))
                         .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toList());
 
-        return new UsernamePasswordAuthenticationToken(userDetails, "", authorities);
+        User user = new User(claims.getSubject(), "", authorities);
+
+        return new UsernamePasswordAuthenticationToken(user, "", authorities);
     }
 
+    private Claims getClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(Constants.SIGNING_KEY)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
 }

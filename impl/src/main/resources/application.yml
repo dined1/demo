@@ -1,7 +1,5 @@
 server:
   port: 8083
-  servlet:
-    context-path: /api
 
 spring:
   liquibase:
@@ -24,7 +22,7 @@ spring:
 #    url: jdbc:postgresql://be4x0r1rfffinvjf8mmp-postgresql.services.clever-cloud.com:5432/be4x0r1rfffinvjf8mmp
 #    username: uu1dezf1kkx5qbm2higq
 #    password: t1uhQnH0Q69DVsfzzmO1
-    url: jdbc:postgresql://ec2-174-129-29-101.compute-1.amazonaws.com:5432/dcorjq5gogu8np
-    username: vievzjyolsohyh
-    password: d57bce07c83051b8eeb6a67259c0798def2c1b86b2e7930978ae7dd6989955af
+    url: jdbc:postgresql://ec2-52-200-119-0.compute-1.amazonaws.com:5432/d1777nfj3b7552
+    username: dyqupsknurzetl
+    password: 32cb635675d62b16c66047a648af137e39cd284fa804fc72bd990e2be41403bd
     driver-class-name: org.postgresql.Driver
