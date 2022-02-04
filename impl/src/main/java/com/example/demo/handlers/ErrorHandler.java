@@ -1,5 +1,6 @@
 package com.example.demo.handlers;
 
+import com.example.demo.handlers.models.ErrorResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpHeaders;
@@ -17,19 +18,9 @@ import java.util.Date;
 @RestControllerAdvice
 public class ErrorHandler extends ResponseEntityExceptionHandler {
 
-    @Getter
-    @AllArgsConstructor
-    private class ErrorObject {
-        private String error;
-        private String message;
-        private String path;
-        private HttpStatus status;
-        private String timestamp;
-    }
-
     @ExceptionHandler(UsernameNotFoundException.class)
     protected ResponseEntity handleUsernameNotFoundException(RuntimeException e, WebRequest request){
-        ErrorObject errorObject = new ErrorObject("Unauthorized", e.getMessage(),
+        ErrorResponse errorObject = new ErrorResponse("Unauthorized", e.getMessage(),
                 ((ServletWebRequest)request).getRequest().getRequestURI(), HttpStatus.UNAUTHORIZED, new Date().toString());
         return handleExceptionInternal(e, errorObject, new HttpHeaders(), HttpStatus.UNAUTHORIZED, request);
     }

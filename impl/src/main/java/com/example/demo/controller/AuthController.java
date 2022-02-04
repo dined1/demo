@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.Date;
 
 @RestController
 @Log4j2
@@ -89,11 +88,4 @@ public class AuthController {
         systemUserDto.setToken(token);
         return systemUserDto;
     }
-
-    @GetMapping(value = "/expDate")
-    public Date GetExpDate(@PathVariable String token){
-        token = token.replace(Constants.TOKEN_PREFIX, "");
-        return jwtTokenUtil.getExpirationDateFromToken(token);
-    }
-
 }

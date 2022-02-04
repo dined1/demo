@@ -23,7 +23,7 @@ public class HttpAliveJob {
     @Scheduled(cron = "0 */25 * * * *")
     public void pingServer(){
         try {
-            restTemplate.getForEntity("https://dbcloudback.herokuapp.com/api/job", null);
+            restTemplate.getForEntity("https://dbcloudback.herokuapp.com/job", null);
         } catch (HttpClientErrorException e){
             log.info("You shall not die!");
         }

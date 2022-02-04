@@ -15,7 +15,7 @@ public class JobController {
 
     @GetMapping("/job")
     @ResponseStatus(HttpStatus.OK)
-    public void getHealth(HttpServletRequest request, HttpServletResponse response) {
+    public void getHealth() {
         return;
     }
 

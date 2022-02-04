@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/keys")
+@RequestMapping("/api/keys")
 public class KeysController {
 
     private final KeyService keyService;
@@ -46,17 +46,6 @@ public class KeysController {
         return new PageResult(userKeys.getTotalElements(), userKeys.getNumber()+1,
                 userKeys.getSize(), userKeys.getTotalPages(), userKeys.get().map(keySetMapper::toDto)
                 .collect(Collectors.toList()));
-    }
-
-    @GetMapping("/exists/{id}")
-    public boolean secretExists(@PathVariable String id){
-        return keyService.secretExists(id);
-    }
-
-    @GetMapping("/secret/")
-    public KeySetDto secretExists(@RequestParam String secret,
-                               @RequestParam List<String> keys){
-        return keySetMapper.toDto(keyService.getSecret(secret, keys));
     }
 
     @PostMapping("/key")

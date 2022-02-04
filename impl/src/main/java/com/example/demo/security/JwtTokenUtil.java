@@ -17,6 +17,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collection;
 import java.util.Date;
 import java.util.function.Function;
@@ -27,51 +28,34 @@ public class JwtTokenUtil implements Serializable {
 
     private static final Logger LOGGER = LogManager.getLogger(JwtTokenUtil.class);
 
-    public String getUsernameFromToken(String token) {
-        return getClaimFromToken(token, Claims::getSubject);
-    }
-
-    public Date getExpirationDateFromToken(String token) {
-
-        return getClaimFromToken(token, Claims::getExpiration);
-    }
-
-    public <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = getAllClaimsFromToken(token);
-        return claimsResolver.apply(claims);
-    }
-
-    private Claims getAllClaimsFromToken(String token) {
-        return Jwts.parser()
-                .setSigningKey(Constants.SIGNING_KEY.getBytes())
-                .parseClaimsJws(token)
-                .getBody();
-    }
-
-    private Boolean isTokenExpired(String token) {
-        final Date expiration = getExpirationDateFromToken(token);
-        return expiration.before(new Date());
-    }
-
     public String generateToken(Authentication authentication) {
         final String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority).
                         collect(Collectors.joining(","));
-        SecretKey key = new SecretKeySpec(Constants.SIGNING_KEY.getBytes(), SignatureAlgorithm.HS256.getJcaName());
-        return Jwts.builder().
-                setSubject(authentication.getName())
+        SecretKey key = new SecretKeySpec(
+                base64Encode(Constants.SIGNING_KEY).getBytes(),
+                SignatureAlgorithm.HS256.getJcaName());
+        return Jwts.builder()
+                .setSubject(authentication.getName())
                 .claim("scopes", authorities)
-                .signWith(key)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis()
                         + Constants.ACCESS_TOKEN_VALIDITY_SECONDS))
+                .signWith(key)
                 .compact();
 
     }
 
+    private String base64Encode(String decodedString) {
+        return Base64.getEncoder().encodeToString(decodedString.getBytes());
+    }
+
     public boolean validateToken(String authToken) {
         try {
-            Jwts.parser().setSigningKey(Constants.SIGNING_KEY).parseClaimsJws(authToken);
+            Jwts.parserBuilder()
+                    .setSigningKey(base64Encode(Constants.SIGNING_KEY))
+                    .build()
+                        .parseClaimsJws(authToken);
             return true;
         } catch (SignatureException e) {
             LOGGER.info("Invalid JWT signature trace: {0}", e);
@@ -102,7 +86,7 @@ public class JwtTokenUtil implements Serializable {
 
     private Claims getClaims(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(Constants.SIGNING_KEY)
+                .setSigningKey(base64Encode(Constants.SIGNING_KEY))
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
